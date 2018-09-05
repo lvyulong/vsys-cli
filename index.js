@@ -11,7 +11,7 @@ const fs = require('fs');
 const gitUrl = 'https://github.com:lvyulong/vue-demo#master';
 
 program
-    .version(require('../package.json').version)
+    .version(require('./package.json').version)
     .parse(process.argv);
 
 program
