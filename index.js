@@ -7,13 +7,20 @@ const chalk = require('chalk'); //用来给命令行提示改变颜色
 const symbols = require('log-symbols'); //用来给命令行提示信息添加小图标
 const handlebars = require('handlebars');   //编译模板文件中可动态替换的变量，如package.json文件中的name、author等
 const fs = require('fs');
+const _ = require('underscore');
+
 
 const gitUrl = 'https://github.com:lvyulong/vue-demo#master';
+const pageList = [
+    {id: 1, name: 'formTemplate.vue', label: "表单"},
+    {id: 2, name: 'pageListTemplate.vue', label: "列表"},
+];
 
 program
     .version(require('./package.json').version)
     .parse(process.argv);
 
+// 初始化项目
 program
     .command('init <name>')
     .action((name) => {
@@ -30,7 +37,7 @@ program
             }
         ]).then((answers) => {
             // 判断项目是否存在
-            if (fs.existsSync(name)){
+            if (fs.existsSync(name)) {
                 console.log(symbols.error, chalk.red('项目已存在'));
                 return;
             }
@@ -50,17 +57,84 @@ program
                         author: answers.author
                     };
                     let packageFileName = `${name}/package.json`;
-                    if (fs.existsSync(packageFileName)){
+                    if (fs.existsSync(packageFileName)) {
                         let content = fs.readFileSync(packageFileName).toString();
                         let result = handlebars.compile(content)(meta);
                         fs.writeFileSync(packageFileName, result);
                     }
-                    console.log(symbols.success, chalk.green('项目初始化完成'));
+                    console.log(symbols.success, chalk.green('项目初始化完成！'));
                 }
             })
+        })
+    });
+
+// 初始化页面
+program
+    .command("page")
+    .action(() => {
+        console.log("请选择以下模板进行初始化页面：");
+        for (let i = 0; i < pageList.length; i++) {
+            let item = pageList[i];
+            console.log(chalk.blue(`${item.id}.`), chalk.blue(item.label));
+        }
+        inquirer.prompt([
+            {
+                type: 'input',
+                name: 'templateId',
+                message: '请输入模板编号：'
+            },
+            {
+                type: 'input',
+                name: 'path',
+                message: '请指定初始化路径：'
+            },
+            {
+                type: 'input',
+                name: 'filename',
+                message: '请指定文件名称：'
+            }
+        ]).then((answers) => {
+            createPath(answers.path,function (res) {
+                let srcFile = _.findWhere(pageList,{id:answers.templateId}).name;
+                let desFile = answers.filename;
+                let desPath = answers.path;
+                fs.copyFile(`./templates/${srcFile}.vue`, `./${res}/${desFile}.vue`, (err) => {
+                    if (err) {
+                        console.log(symbols.error,chalk.red(err));
+                    }else{
+                        console.log(symbols.success,chalk.green("页面初始化完成！"));
+                    }
+                });
+            });
         })
     });
 
 program.parse(process.argv);
 
 
+
+
+
+
+function createPath(path,callback) {
+    var pathArray = path.split('/');
+    var  url = `src/views`;
+    for (let i = 0; i < pathArray.length; i++) {
+        url = `${url}/${pathArray[i]}`;
+        if (!DirIsExist(url)) {
+            fs.mkdirSync(url)
+        }
+    }
+    callback&&callback(url);
+}
+
+
+// 判断文件夹是否存在
+function DirIsExist(path) {
+    try {
+        fs.accessSync(path, fs.F_OK);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
