@@ -18,6 +18,7 @@ const pageList = [
 
 program
     .version(require('./package.json').version)
+    .option('-l --list','show all options and commands')
     .parse(process.argv);
 
 // 初始化项目
@@ -110,6 +111,11 @@ program
     });
 
 program.parse(process.argv);
+
+if (!process.argv.slice(2).length || program.list) {
+    program.outputHelp();
+}
+
 
 // 按照路径，逐级往下找，没有目录则创建目录，杀出个血路（0.0）
 function createPath(path, callback) {
