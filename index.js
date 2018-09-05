@@ -10,7 +10,11 @@ const fs = require('fs');
 
 const gitUrl = 'https://github.com:lvyulong/vue-demo#master';
 
-program.version('1.0.0', '-v, --version')
+program
+    .version(require('../package.json').version)
+    .parse(process.argv);
+
+program
     .command('init <name>')
     .action((name) => {
         inquirer.prompt([
