@@ -12,8 +12,8 @@ const _ = require('underscore');
 
 const gitUrl = 'https://github.com:lvyulong/vue-demo#master';
 const pageList = [
-    {id: 1, name: 'formTemplate.vue', label: "表单"},
-    {id: 2, name: 'pageListTemplate.vue', label: "列表"},
+    {id: 1, name: 'formTemplate', label: "表单"},
+    {id: 2, name: 'pageListTemplate', label: "列表"},
 ];
 
 program
@@ -94,15 +94,15 @@ program
                 message: '请指定文件名称：'
             }
         ]).then((answers) => {
-            createPath(answers.path,function (res) {
-                let srcFile = _.findWhere(pageList,{id:answers.templateId}).name;
+            createPath(answers.path, function (res) {
+                let srcFile = _.findWhere(pageList, {id: parseInt(answers.templateId)}).name;
                 let desFile = answers.filename;
                 let desPath = answers.path;
                 fs.copyFile(`./templates/${srcFile}.vue`, `./${res}/${desFile}.vue`, (err) => {
                     if (err) {
-                        console.log(symbols.error,chalk.red(err));
-                    }else{
-                        console.log(symbols.success,chalk.green("页面初始化完成！"));
+                        console.log(symbols.error, chalk.red(err));
+                    } else {
+                        console.log(symbols.success, chalk.green("页面初始化完成！"));
                     }
                 });
             });
@@ -111,21 +111,22 @@ program
 
 program.parse(process.argv);
 
-
-
-
-
-
-function createPath(path,callback) {
+// 按照路径，逐级往下找，没有目录则创建目录，杀出个血路（0.0）
+function createPath(path, callback) {
     var pathArray = path.split('/');
-    var  url = `src/views`;
+    var url = `src/views`;
     for (let i = 0; i < pathArray.length; i++) {
         url = `${url}/${pathArray[i]}`;
         if (!DirIsExist(url)) {
-            fs.mkdirSync(url)
+            try {
+                fs.mkdirSync(url)
+            } catch (err) {
+                console.log(chalk.red(err))
+            }
+
         }
     }
-    callback&&callback(url);
+    callback && callback(url);
 }
 
 
