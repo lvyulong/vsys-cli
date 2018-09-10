@@ -1,7 +1,7 @@
 {
   "name": "vsys-cli",
   "version": "1.0.5",
-  "description": "",
+  "description": "初始化vue的项目",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
