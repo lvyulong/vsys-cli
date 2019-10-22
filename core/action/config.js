@@ -5,10 +5,11 @@ const inquirer = require('inquirer');   //用来处理命令行交互
 const symbols = require('log-symbols'); //用来给命令行提示信息添加小图标
 const tool = require('../../tool');
 const config = require('../../config');
+const fs = require('fs');
 
 module.exports = function () {
     // 项目配置
-    let loginTypeNames = _.pluck(config.loginType,'name');
+    let loginTypeNames = _.pluck(config.loginType, 'name');
     program
         .command('config')
         .action(() => {
@@ -46,7 +47,6 @@ module.exports = function () {
                 tool.spinner.start(chalk.yellow.bold('正在项目配置...'));
                 let pathArr = process.cwd().split('\\');
                 let name = pathArr[pathArr.length - 1];
-
                 try {
                     // build/dev
                     let buildDev = `${process.cwd()}/build/dev.js`;
@@ -64,15 +64,27 @@ module.exports = function () {
                     let srcConfigSys = `${process.cwd()}/src/config/sys.js`;
                     tool.compile(srcConfigSys, {
                         baseUrl: answers.baseUrl,
-                        loginType: _.findWhere(config.loginType,{name:answers.loginType}).id,
+                        loginType: _.findWhere(config.loginType, {name: answers.loginType}).id,
                     });
+
+                    // src/api 根据项目名，更改基础路径
+                    let apiFilePath = `${process.cwd()}/src/api`;
+                    let apiFiles = fs.readdirSync(apiFilePath);
+                    if(apiFiles && apiFiles.length > 0){
+                        apiFiles.forEach(function (v) {
+                            let apiItemPath = `${process.cwd()}/src/api/${v}`;
+                            tool.compile(apiItemPath, {
+                                name: name,
+                            });
+                        })
+                    }
+
                     setTimeout(function () {
                         tool.spinner.succeed(chalk.green.bold('项目配置完成'));
-                    },2000)
-                }catch (e) {
+                    }, 2000);
+                } catch (e) {
                     tool.spinner.fail(chalk.red.bold(e));
                 }
-
             })
         })
 };
