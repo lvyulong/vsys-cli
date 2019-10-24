@@ -2,7 +2,6 @@ const program = require('commander');   //用来处理命令行参数
 const inquirer = require('inquirer');   //用来处理命令行交互
 const tool = require('../../tool');
 const fs = require('fs');
-
 module.exports = function () {
     // 初始化页面
     program

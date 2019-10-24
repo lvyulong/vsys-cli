@@ -6,9 +6,7 @@ const symbols = require('log-symbols'); //用来给命令行提示信息添加�
 const tool = require('../../tool');
 const config = require('../../config');
 const fs = require('fs');
-
 let loginTypeNames = _.pluck(config.loginType, 'name');
-
 function handleConfig(option) {
     let cwd = option && option.cwd || process.cwd();
     inquirer.prompt([
