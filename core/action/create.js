@@ -3,11 +3,12 @@ const download = require('download-git-repo'); //用来从github下载模板
 const chalk = require('chalk'); //用来给命令行提示改变颜色
 const inquirer = require('inquirer');   //用来处理命令行交互
 const symbols = require('log-symbols'); //用来给命令行提示信息添加小图标
-
 const fs = require('fs');
 const config = require('../../config');
 const tool = require('../../tool');
 const _ = require('underscore');
+const { exec } = require('child_process');
+const actionConfig = require('./config');
 module.exports = function () {
     // 初始化项目
     program
@@ -84,7 +85,10 @@ module.exports = function () {
                                 },
                             ]).then(function (answers) {
                                 if(answers.startConfig == 'Yes'){
-                                    console.log(symbols.success,chalk.green.bold("配置完成！！！"));
+                                    // console.log(symbols.success,chalk.green.bold("配置完成！！！"));
+                                    actionConfig.handleConfig({
+                                        cwd:`${process.cwd()}\\${name}`
+                                    });
                                 }else{
                                     console.log(symbols.warning,chalk.yellow(`项目未进行配置，随后进入${chalk.red.bold('项目根目录')}使用${chalk.red.bold('vs config')}进行配置或者直接在代码文件中进行修改`));
                                 }

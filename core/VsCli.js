@@ -23,11 +23,13 @@ module.exports = class VsCli {
         // 基础设置
         actionBase();
 
-        // 创建新项目
-        actionCreate();
+
 
         // 配置项目
-        actionConfig();
+        actionConfig.config();
+
+        // 创建新项目
+        actionCreate();
 
         // actionCreate(this);
         //
