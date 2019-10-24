@@ -6,7 +6,7 @@
 
 二、初始化项目
 
-    vsys create <name>
+    vs create <name>
     
     
 三、初始化配置
