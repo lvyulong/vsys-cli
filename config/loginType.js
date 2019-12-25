@@ -6,5 +6,9 @@ module.exports = [
     {
         name:'账号密码登录',
         id:'password'
+    },
+    {
+        name:'用户中心',
+        id:'uc'
     }
 ];

@@ -6,10 +6,18 @@ const symbols = require('log-symbols'); //用来给命令行提示信息添加�
 const tool = require('../../tool');
 const config = require('../../config');
 const fs = require('fs');
+const {exec} = require('child_process');
 let loginTypeNames = _.pluck(config.loginType, 'name');
+
 function handleConfig(option) {
     let cwd = option && option.cwd || process.cwd();
     inquirer.prompt([
+        {
+            type: 'input',
+            name: 'sysName',
+            message: '系统名称: ',
+
+        },
         {
             type: 'input',
             name: 'domain',
@@ -60,6 +68,7 @@ function handleConfig(option) {
             let srcConfigSys = `${cwd}/src/config/sys.js`;
             tool.compile(srcConfigSys, {
                 baseUrl: answers.baseUrl,
+                sysName: answers.sysName,
                 loginType: _.findWhere(config.loginType, {name: answers.loginType}).id,
             });
 
@@ -74,10 +83,33 @@ function handleConfig(option) {
                     });
                 })
             }
+            tool.spinner.succeed(chalk.green.bold('项目配置完成'));
+            // 询问是否下载依赖
+            inquirer.prompt([
+                {
+                    type: 'list',
+                    choices: ["Yes", "No"],
+                    name: 'downloadDep',
+                    message: '是否立即下载依赖？'
+                },
+            ]).then(function (answers) {
+                if (answers.downloadDep == 'Yes') {
+                    tool.spinner.start(chalk.yellow.bold('正在下载依赖...'));
+                    exec('npm install', {cwd:cwd},(error, stdout, stderr) => {
+                        if(error){
+                            console.error(chalk.red.bold('依赖下载失败'));
+                            return;
+                        }
+                        console.log(stdout);
+                        console.log(stderr);
+                        tool.spinner.succeed(chalk.green.bold('依赖下载完成'));
+                    });
 
-            setTimeout(function () {
-                tool.spinner.succeed(chalk.green.bold('项目配置完成'));
-            }, 2000);
+
+                } else {
+                    console.log("请手动运行npm install 下载依赖")
+                }
+            });
         } catch (e) {
             tool.spinner.fail(chalk.red.bold(e));
         }

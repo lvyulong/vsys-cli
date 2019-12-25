@@ -7,7 +7,7 @@ const fs = require('fs');
 const config = require('../../config');
 const tool = require('../../tool');
 const _ = require('underscore');
-const { exec } = require('child_process');
+const {exec} = require('child_process');
 const actionConfig = require('./config');
 module.exports = function () {
     // 初始化项目
@@ -54,45 +54,53 @@ module.exports = function () {
                             console.error(err);
                         } else {
                             tool.spinner.succeed(chalk.green.bold("下载模板完成"));
+                            // 删除server doc目录
+                            exec('rd server doc \/s\/q', {cwd:`${process.cwd()}\\${name}`},(error, stdout, stderr) => {
+                                if(error){
+                                    console.error(chalk.red.bold('优化模板文件失败'));
+                                    return;
+                                }
+                            });
                             tool.spinner.start(chalk.yellow.bold("正在初始化项目..."));
-
                             // package.json替换
                             let pkg = `${process.cwd()}\\${name}\\package.json`;
-                            tool.compile(pkg,{
+                            tool.compile(pkg, {
                                 name,
                                 description: answers.description,
                                 author: answers.author
                             });
                             // build/base替换
                             let buildBase = `${process.cwd()}\\${name}\\build\\base.js`;
-                            tool.compile(buildBase,{name});
+                            tool.compile(buildBase, {name});
 
                             // main.js替换
                             let mainJs = `${process.cwd()}\\${name}\\src\\main.js`;
-                            tool.compile(mainJs,{
-                                ip:tool.IPv4(),
-                                domain:'{{domain}}',    // 防止被替换成空字符串，这个属性在vs config时才替换
-                                prod:'{{prod}}'         // 防止被替换成空字符串，这个属性在vs config时才替换
+                            tool.compile(mainJs, {
+                                ip: tool.IPv4(),
+                                domain: '{{domain}}',    // 防止被替换成空字符串，这个属性在vs config时才替换
+                                prod: '{{prod}}'         // 防止被替换成空字符串，这个属性在vs config时才替换
                             });
                             tool.spinner.succeed(chalk.green.bold("项目初始化完成"));
                             // 询问是否立即初始化配置
                             inquirer.prompt([
                                 {
                                     type: 'list',
-                                    choices:["Yes","No"],
+                                    choices: ["Yes", "No"],
                                     name: 'startConfig',
-                                    message: '是否立即进行项目的初始化配置？'
+                                    message: '是否立即进行项目配置？'
                                 },
                             ]).then(function (answers) {
-                                if(answers.startConfig == 'Yes'){
-                                    // console.log(symbols.success,chalk.green.bold("配置完成！！！"));
+                                if (answers.startConfig == 'Yes') {
                                     actionConfig.handleConfig({
-                                        cwd:`${process.cwd()}\\${name}`
+                                        cwd: `${process.cwd()}\\${name}`
                                     });
-                                }else{
-                                    console.log(symbols.warning,chalk.yellow(`项目未进行配置，随后进入${chalk.red.bold('项目根目录')}使用${chalk.red.bold('vs config')}进行配置或者直接在代码文件中进行修改`));
+                                } else {
+                                    console.log(symbols.warning, chalk.yellow(`项目未进行配置，随后进入${chalk.red.bold('项目根目录')}使用${chalk.red.bold('vs config')}进行配置或者直接在代码文件中进行修改`));
                                 }
                             })
+
+
+
                         }
                     })
                 })
