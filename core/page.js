@@ -1,6 +1,6 @@
 const program = require('commander');   //用来处理命令行参数
 const inquirer = require('inquirer');   //用来处理命令行交互
-const tool = require('../../tool');
+const handle = require('../handle');
 const fs = require('fs');
 module.exports = function () {
     // 初始化页面
@@ -29,7 +29,7 @@ module.exports = function () {
                     message: '请指定文件名称：'
                 }
             ]).then((answers) => {
-                tool.createPath(answers.path, function (res) {
+                handle.createPath(answers.path, function (res) {
                     let srcFile = _.findWhere(pageList, {id: parseInt(answers.templateId)}).name;
                     let desFile = answers.filename;
                     let desPath = answers.path;
