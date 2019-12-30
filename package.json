@@ -8,7 +8,7 @@
     "start": "node index.js"
   },
   "bin": {
-    "vs-dev": "index.js"
+    "vs": "index.js"
   },
   "author": "lvyl",
   "license": "ISC",
