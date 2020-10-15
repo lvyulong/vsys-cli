@@ -1,14 +1,14 @@
 module.exports = {
     system:{
-        url:'lvyulong/vue-system',
+        url:'gitlab:code.caicv.com:lemon-fw/vue-pc#master',
         author:'lvyulong',
-        project:'vue-system',
+        project:'vue-pc',
         branch:'master',
     },
     mobile:{
-        url:'lvyulong/vue-app',
+        url:'gitlab:code.caicv.com:lemon-fw/vue-mobile#master',
         author:'lvyulong',
-        project:'vue-app',
+        project:'vue-mobile',
         branch:'master',
     }
 };
