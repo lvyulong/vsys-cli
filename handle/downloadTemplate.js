@@ -17,7 +17,7 @@ module.exports = function (name, cmd,gitType) {
             return;
         }
         spinner.start(chalk.yellow.bold("正在下载模板..."));
-        download(config.git[gitType].url, dest, (err) => {
+        download(config.git[gitType].url, dest,{clone:true}, (err) => {
             if (err) {
                 spinner.fail(chalk.red.bold("下载模板失败"));
                 console.error(err);
