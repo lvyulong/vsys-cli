@@ -25,12 +25,12 @@ module.exports = function (name, cmd,gitType) {
             } else {
                 spinner.succeed(chalk.green.bold("下载模板完成"));
                 // 删除server doc目录,此步失败不会reject，因为不影响后续的操作
-                exec('rd server doc \/s\/q', {cwd: `${process.cwd()}\\${name}`}, (error, stdout, stderr) => {
-                    if (error) {
-                        console.error(chalk.red.bold('优化模板文件失败'));
-                        return;
-                    }
-                });
+                // exec('rd server doc \/s\/q', {cwd: `${process.cwd()}\\${name}`}, (error, stdout, stderr) => {
+                //     if (error) {
+                //         console.error(chalk.red.bold('优化模板文件失败'));
+                //         return;
+                //     }
+                // });
                 resolve();
             }
         })
