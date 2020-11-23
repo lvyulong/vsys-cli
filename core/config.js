@@ -16,11 +16,9 @@ function handleConfig(option) {
     let configs = [
         {
             type: 'input',
-            name: 'sysName',
-            message: '系统名称: ',
-
+            name: 'apiName',
+            message: 'api模块名(如admin/app等): ',
         },
-
         {
             type: 'input',
             name: 'port',
@@ -99,7 +97,7 @@ function handleConfig(option) {
                 apiFiles.forEach(function (v) {
                     let apiItemPath = `${cwd}/src/api/${v}`;
                     handle.compile(apiItemPath, {
-                        name: name,
+                        name: answers.apiName,
                     });
                 })
             }
