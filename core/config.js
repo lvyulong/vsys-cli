@@ -35,12 +35,6 @@ function handleConfig(option) {
             name: 'baseUrl',
             default: '/api',
             message: 'api基础路径: ',
-        },
-        {
-            type: 'input',
-            name: 'output',
-            default: '../../../web/',
-            message: '输出目录(相对路径): ',
         }
     ];
     if (option.system) {
