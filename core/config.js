@@ -20,11 +20,7 @@ function handleConfig(option) {
             message: '系统名称: ',
 
         },
-        {
-            type: 'input',
-            name: 'domain',
-            message: 'devServer代理域名: ',
-        },
+
         {
             type: 'input',
             name: 'port',
@@ -32,10 +28,25 @@ function handleConfig(option) {
         },
         {
             type: 'input',
-            name: 'baseUrl',
+            name: 'domain',
+            message: 'devServer代理域名: ',
+        },
+        {
+            type: 'input',
+            name: 'devBaseUrl',
             default: '/api',
-            message: 'api基础路径: ',
-        }
+            message: 'dev - api基础路径: ',
+        },
+        {
+            type: 'input',
+            name: 'testBaseUrl',
+            message: 'test - api基础路径: ',
+        },
+        {
+            type: 'input',
+            name: 'prodBaseUrl',
+            message: 'prod - api基础路径: ',
+        },
     ];
     if (option.system) {
         configs.push({
@@ -65,7 +76,9 @@ function handleConfig(option) {
             // src/config/sys
             let srcConfigSys = `${cwd}/src/config/sys.js`;
             let sysOption = {
-                baseUrl: answers.baseUrl,
+                devBaseUrl: answers.devBaseUrl,
+                testBaseUrl: answers.testBaseUrl,
+                prodBaseUrl: answers.prodBaseUrl,
                 sysName: answers.sysName,
             };
             if (option.system) {
