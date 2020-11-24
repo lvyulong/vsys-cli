@@ -89,6 +89,8 @@ function handleConfig(option) {
                 prodPublicPath:answers.prodPublicPath,
             });
 
+            console.log("回答的内容：",JSON.stringify(answers));
+
             // build/dev
             let buildDev = `${cwd}/build/dev.js`;
             handle.compile(buildDev, {
