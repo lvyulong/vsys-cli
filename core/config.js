@@ -49,23 +49,27 @@ function handleConfig(option) {
         {
             type: 'input',
             name: 'apiName',
-            message: '后端接口模块名(如：admin): ',
+            default: 'admin',
+            message: '后端接口模块名: ',
         },
         // 前端资源访问路径
         {
             type: 'input',
             name: 'devPublicPath',
-            message: '前端资源访问路径[dev](如：/admin): ',
+            default: '/admin',
+            message: '前端资源访问路径[dev]: ',
         },
         {
             type: 'input',
             name: 'testPublicPath',
-            message: '前端资源访问路径[test](如：/admin): ',
+            default: '/admin',
+            message: '前端资源访问路径[test]: ',
         },
         {
             type: 'input',
             name: 'prodPublicPath',
-            message: '前端资源访问路径[prod](如：/admin): ',
+            default: '/admin',
+            message: '前端资源访问路径[prod]: ',
         }
     ];
     if (option.system) {
