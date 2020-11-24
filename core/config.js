@@ -81,25 +81,26 @@ function handleConfig(option) {
         let pathArr = cwd.split('\\');
         let name = pathArr[pathArr.length - 1];
         try {
+            // build/base
+            let buildBase = `${cwd}/build/base.js`;
+            handle.compile(buildBase, {
+                devPublicPath:answers.devPublicPath,
+                testPublicPath:answers.testPublicPath,
+                prodPublicPath:answers.prodPublicPath,
+            });
+
             // build/dev
             let buildDev = `${cwd}/build/dev.js`;
             handle.compile(buildDev, {
                 domain: answers.domain,
                 port: answers.port,
             });
-            // build/prod
-            let buildProd = `${cwd}/build/prod.js`;
-            handle.compile(buildProd, {
-                output: answers.output,
-                name: name,
-            });
             // src/config/sys
             let srcConfigSys = `${cwd}/src/config/sys.js`;
             let sysOption = {
                 devBaseUrl: answers.devBaseUrl,
                 testBaseUrl: answers.testBaseUrl,
-                prodBaseUrl: answers.prodBaseUrl,
-                sysName: answers.sysName,
+                prodBaseUrl: answers.prodBaseUrl
             };
             if (option.system) {
                 sysOption.loginType = _.findWhere(config.loginType, {name: answers.loginType}).id;
