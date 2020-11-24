@@ -56,7 +56,6 @@ function handleConfig(option) {
         {
             type: 'input',
             name: 'devPublicPath',
-            default: '',
             message: '前端资源访问路径[dev]: ',
         },
         {
