@@ -14,37 +14,59 @@ const projectTypeNames = _.pluck(config.projectType, 'name');
 function handleConfig(option) {
     let cwd = option && option.cwd || process.cwd();
     let configs = [
-        {
-            type: 'input',
-            name: 'apiName',
-            message: 'api模块名(如admin/app等): ',
-        },
+
         {
             type: 'input',
             name: 'port',
-            message: 'devServer端口号: ',
+            message: '本地开发端口号: ',
         },
         {
             type: 'input',
             name: 'domain',
-            message: 'devServer代理域名: ',
+            message: '本地开发代理域名: ',
         },
+
+        // 后端接口基础url
         {
             type: 'input',
             name: 'devBaseUrl',
             default: '/api',
-            message: 'dev - api基础路径: ',
+            message: '后端接口基础路径[dev]: ',
         },
         {
             type: 'input',
             name: 'testBaseUrl',
-            message: 'test - api基础路径: ',
+            default: '/api',
+            message: '后端接口基础路径[test]: ',
         },
         {
             type: 'input',
             name: 'prodBaseUrl',
-            message: 'prod - api基础路径: ',
+            default: '/api',
+            message: '后端接口基础路径[prod]:',
         },
+        // 后端接口模块名
+        {
+            type: 'input',
+            name: 'apiName',
+            message: '后端接口模块名(如：admin): ',
+        },
+        // 前端资源访问路径
+        {
+            type: 'input',
+            name: 'devPublicPath',
+            message: '前端资源访问路径[dev](如：/admin): ',
+        },
+        {
+            type: 'input',
+            name: 'testPublicPath',
+            message: '前端资源访问路径[test](如：/admin): ',
+        },
+        {
+            type: 'input',
+            name: 'prodPublicPath',
+            message: '前端资源访问路径[prod](如：/admin): ',
+        }
     ];
     if (option.system) {
         configs.push({
