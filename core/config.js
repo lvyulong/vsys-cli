@@ -92,9 +92,6 @@ function handleConfig(option) {
                 testPublicPath:answers.testPublicPath,
                 prodPublicPath:answers.prodPublicPath,
             });
-
-            console.log("回答的内容：",JSON.stringify(answers));
-
             // build/dev
             let buildDev = `${cwd}/build/dev.js`;
             handle.compile(buildDev, {
@@ -112,12 +109,6 @@ function handleConfig(option) {
                 sysOption.loginType = _.findWhere(config.loginType, {name: answers.loginType}).id;
             }
             handle.compile(srcConfigSys, sysOption);
-
-            // src/main
-            let srcMainJs = `${cwd}/src/main.js`;
-            handle.compile(srcMainJs, {
-                domain: answers.domain
-            });
 
             // src/api 根据项目名，更改基础路径
             let apiFilePath = `${cwd}/src/api`;

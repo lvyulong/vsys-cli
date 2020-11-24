@@ -3,7 +3,6 @@ const fs = require('fs');
 const handlebars = require('handlebars');
 const chalk = require('chalk');
 module.exports = function (dest,meta) {
-    console.log(dest,meta);
     if (fs.existsSync(dest)) {
         let content = fs.readFileSync(dest).toString();
         let result = handlebars.compile(content)(meta);

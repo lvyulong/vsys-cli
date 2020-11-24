@@ -9,19 +9,13 @@ module.exports = function (name,cmd,type,answers) {
         // package.json替换
         let pkg = `${process.cwd()}\\${name}\\package.json`;
         compile(pkg, {
-            name,
             description: answers.description,
             author: answers.author
         });
-        // build/base替换
-        let buildBase = `${process.cwd()}\\${name}\\build\\base.js`;
-        compile(buildBase, {name});
-
         // main.js替换
         let mainJs = `${process.cwd()}\\${name}\\src\\main.js`;
         compile(mainJs, {
-            ip: IPv4(),
-            domain: '{{domain}}',    // 防止被替换成空字符串，这个属性在vs config时才替换
+            ip: IPv4()
         });
         spinner.succeed(chalk.green.bold("项目初始化完成"));
         resolve();
