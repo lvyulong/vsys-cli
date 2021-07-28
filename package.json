@@ -1,6 +1,6 @@
 {
   "name": "vsys-cli",
-  "version": "2.5.4",
+  "version": "2.5.5",
   "description": "初始化vue的项目",
   "main": "index.js",
   "scripts": {
