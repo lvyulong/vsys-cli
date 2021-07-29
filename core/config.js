@@ -100,7 +100,6 @@ function handleConfig(option) {
     inquirer.prompt(configs).then(function (answers) {
         spinner.start(chalk.yellow.bold('正在项目配置...'));
         let pathArr = cwd.split('\\');
-        let name = pathArr[pathArr.length - 1];
         try {
 
             // CI/CD
