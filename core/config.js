@@ -80,7 +80,14 @@ function handleConfig(option) {
             name: 'publicPathProduction',
             default: '/admin',
             message: 'public-path[production]: ',
-        }
+        },
+        // CI/CD
+        {
+            type: 'input',
+            name: 'ciRepository',
+            default: 'default',
+            message: 'CI/CD 公共库: ',
+        },
     ];
     if (option.system) {
         configs.push({
@@ -95,22 +102,30 @@ function handleConfig(option) {
         let pathArr = cwd.split('\\');
         let name = pathArr[pathArr.length - 1];
         try {
+
+            // CI/CD
+            let gitlabCI = `${cwd}/.gitlab-ci.yml`;
+            let ciRepository = answers.ciRepository || 'hrtps-devops/gitlab-shared-ci';
+            handle.compile(gitlabCI, {
+                ciRepository: ciRepository
+            });
+
             // build/base
-            let buildBase = `${cwd}/build/base.js`;
+            let buildBase = `${cwd}/dev/build/base.js`;
             handle.compile(buildBase, {
-                publicPathLocal:answers.publicPathLocal,
-                publicPathDevelop:answers.publicPathDevelop,
-                publicPathTest:answers.publicPathTest,
-                publicPathProduction:answers.publicPathProduction
+                publicPathLocal: answers.publicPathLocal,
+                publicPathDevelop: answers.publicPathDevelop,
+                publicPathTest: answers.publicPathTest,
+                publicPathProduction: answers.publicPathProduction
             });
             // build/dev
-            let buildDev = `${cwd}/build/local.js`;
+            let buildDev = `${cwd}/dev/build/local.js`;
             handle.compile(buildDev, {
                 proxy: answers.proxy,
                 port: answers.port,
             });
             // src/config/sys
-            let srcConfigEnv = `${cwd}/src/config/env.js`;
+            let srcConfigEnv = `${cwd}/dev/src/config/env.js`;
             let sysOption = {
                 apiBaseUrlLocal: answers.apiBaseUrlLocal,
                 apiBaseUrlDevelop: answers.apiBaseUrlDevelop,
@@ -124,11 +139,11 @@ function handleConfig(option) {
             handle.compile(srcConfigEnv, sysOption);
 
             // src/api 根据项目名，更改基础路径
-            let apiFilePath = `${cwd}/src/api`;
+            let apiFilePath = `${cwd}/dev/src/api`;
             let apiFiles = fs.readdirSync(apiFilePath);
             if (apiFiles && apiFiles.length > 0) {
                 apiFiles.forEach(function (v) {
-                    let apiItemPath = `${cwd}/src/api/${v}`;
+                    let apiItemPath = `${cwd}/dev/src/api/${v}`;
                     handle.compile(apiItemPath, {
                         apiName: answers.apiName,
                     });
