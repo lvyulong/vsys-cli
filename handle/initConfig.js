@@ -7,13 +7,13 @@ module.exports = function (name,cmd,type,answers) {
     var promise = new Promise(function (resolve, reject) {
         spinner.start(chalk.yellow.bold("正在初始化项目..."));
         // package.json替换
-        let pkg = `${process.cwd()}\\${name}\\package.json`;
+        let pkg = `${process.cwd()}\\${name}\\dev\\package.json`;
         compile(pkg, {
             description: answers.description,
             author: answers.author
         });
         // main.js替换
-        let mainJs = `${process.cwd()}\\${name}\\src\\main.js`;
+        let mainJs = `${process.cwd()}\\${name}\\dev\\src\\main.js`;
         compile(mainJs, {
             ip: IPv4()
         });
