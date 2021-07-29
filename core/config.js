@@ -67,6 +67,7 @@ function handleConfig(option) {
         {
             type: 'input',
             name: 'publicPathDevelop',
+            default: '/admin',
             message: 'public-path[develop]: ',
         },
         {
