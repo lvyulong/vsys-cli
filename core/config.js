@@ -86,7 +86,7 @@ function handleConfig(option) {
         {
             type: 'input',
             name: 'ciRepository',
-            default: 'default',
+            default: 'hrtps-devops/gitlab-shared-ci',
             message: 'CI/CD 公共库: ',
         },
     ];
@@ -105,9 +105,8 @@ function handleConfig(option) {
 
             // CI/CD
             let gitlabCI = `${cwd}/.gitlab-ci.yml`;
-            let ciRepository = answers.ciRepository || 'hrtps-devops/gitlab-shared-ci';
             handle.compile(gitlabCI, {
-                ciRepository: ciRepository
+                ciRepository: answers.ciRepository
             });
 
             // build/base
