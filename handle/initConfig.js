@@ -10,7 +10,8 @@ module.exports = function (name,cmd,type,answers) {
         let pkg = `${process.cwd()}\\${name}\\dev\\package.json`;
         compile(pkg, {
             description: answers.description,
-            author: answers.author
+            author: answers.author,
+            projectName: name
         });
         // main.js替换
         let mainJs = `${process.cwd()}\\${name}\\dev\\src\\main.js`;
