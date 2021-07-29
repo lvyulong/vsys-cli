@@ -22,28 +22,34 @@ function handleConfig(option) {
         },
         {
             type: 'input',
-            name: 'domain',
-            message: '本地开发代理域名: ',
+            name: 'proxy',
+            message: '本地开发代理: ',
         },
 
         // 后端接口基础url
         {
             type: 'input',
-            name: 'devBaseUrl',
+            name: 'apiBaseUrlLocal',
             default: '/api',
-            message: '后端接口基础路径[dev]: ',
+            message: 'api-base-url[local]: ',
         },
         {
             type: 'input',
-            name: 'testBaseUrl',
+            name: 'apiBaseUrlDevelop',
             default: '/api',
-            message: '后端接口基础路径[test]: ',
+            message: 'api-base-url[develop]: ',
         },
         {
             type: 'input',
-            name: 'prodBaseUrl',
+            name: 'apiBaseUrlTest',
             default: '/api',
-            message: '后端接口基础路径[prod]:',
+            message: 'api-base-url[test]: ',
+        },
+        {
+            type: 'input',
+            name: 'apiBaseUrlProduction',
+            default: '/api',
+            message: 'api-base-url[production]:',
         },
         // 后端接口模块名
         {
@@ -55,20 +61,25 @@ function handleConfig(option) {
         // 前端资源访问路径
         {
             type: 'input',
-            name: 'devPublicPath',
-            message: '前端资源访问路径[dev]: ',
+            name: 'publicPathLocal',
+            message: 'public-pach[local]: ',
         },
         {
             type: 'input',
-            name: 'testPublicPath',
-            default: '/admin',
-            message: '前端资源访问路径[test]: ',
+            name: 'publicPathDevelop',
+            message: 'public-path[develop]: ',
         },
         {
             type: 'input',
-            name: 'prodPublicPath',
+            name: 'publicPathTest',
             default: '/admin',
-            message: '前端资源访问路径[prod]: ',
+            message: 'public-path[test]: ',
+        },
+        {
+            type: 'input',
+            name: 'publicPathProduction',
+            default: '/admin',
+            message: 'public-path[production]: ',
         }
     ];
     if (option.system) {
@@ -87,27 +98,30 @@ function handleConfig(option) {
             // build/base
             let buildBase = `${cwd}/build/base.js`;
             handle.compile(buildBase, {
-                devPublicPath:answers.devPublicPath,
-                testPublicPath:answers.testPublicPath,
-                prodPublicPath:answers.prodPublicPath,
+                publicPathLocal:answers.publicPathLocal,
+                publicPathDevelop:answers.publicPathDevelop,
+                publicPathTest:answers.publicPathTest,
+                publicPathProduction:answers.publicPathProduction
             });
             // build/dev
-            let buildDev = `${cwd}/build/dev.js`;
+            let buildDev = `${cwd}/build/local.js`;
             handle.compile(buildDev, {
-                domain: answers.domain,
+                proxy: answers.proxy,
                 port: answers.port,
             });
             // src/config/sys
-            let srcConfigSys = `${cwd}/src/config/sys.js`;
+            let srcConfigEnv = `${cwd}/src/config/env.js`;
             let sysOption = {
-                devBaseUrl: answers.devBaseUrl,
-                testBaseUrl: answers.testBaseUrl,
-                prodBaseUrl: answers.prodBaseUrl
+                apiBaseUrlLocal: answers.apiBaseUrlLocal,
+                apiBaseUrlDevelop: answers.apiBaseUrlDevelop,
+                apiBaseUrlTest: answers.apiBaseUrlTest,
+                apiBaseUrlProduction: answers.apiBaseUrlProduction,
+
             };
             if (option.system) {
                 sysOption.loginType = _.findWhere(config.loginType, {name: answers.loginType}).id;
             }
-            handle.compile(srcConfigSys, sysOption);
+            handle.compile(srcConfigEnv, sysOption);
 
             // src/api 根据项目名，更改基础路径
             let apiFilePath = `${cwd}/src/api`;
@@ -116,7 +130,7 @@ function handleConfig(option) {
                 apiFiles.forEach(function (v) {
                     let apiItemPath = `${cwd}/src/api/${v}`;
                     handle.compile(apiItemPath, {
-                        name: answers.apiName,
+                        apiName: answers.apiName,
                     });
                 })
             }
