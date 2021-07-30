@@ -81,14 +81,7 @@ function handleConfig(option) {
             name: 'publicPathProduction',
             default: '/admin',
             message: 'public-path[production]: ',
-        },
-        // CI/CD
-        {
-            type: 'input',
-            name: 'ciRepository',
-            default: 'hrtps-devops/gitlab-shared-ci',
-            message: 'CI/CD 公共库: ',
-        },
+        }
     ];
     if (option.system) {
         configs.push({
@@ -100,14 +93,7 @@ function handleConfig(option) {
     }
     inquirer.prompt(configs).then(function (answers) {
         spinner.start(chalk.yellow.bold('正在项目配置...'));
-        let pathArr = cwd.split('\\');
         try {
-
-            // CI/CD
-            let gitlabCI = `${cwd}/.gitlab-ci.yml`;
-            handle.compile(gitlabCI, {
-                ciRepository: answers.ciRepository
-            });
 
             // build/base
             let buildBase = `${cwd}/dev/build/base.js`;
