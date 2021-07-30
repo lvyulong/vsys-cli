@@ -147,7 +147,7 @@ function handleConfig(option) {
             ]).then(function (answers) {
                 if (answers.downloadDep == 'Yes') {
                     spinner.start(chalk.yellow.bold('正在下载依赖...'));
-                    exec('npm install', {cwd: cwd}, (error, stdout, stderr) => {
+                    exec('cd dev && npm install', {cwd: cwd}, (error, stdout, stderr) => {
                         if (error) {
                             console.error(chalk.red.bold('依赖下载失败'));
                             return;
