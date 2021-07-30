@@ -55,7 +55,7 @@ function handleConfig(option) {
         {
             type: 'input',
             name: 'apiName',
-            default: 'admin',
+            default: option.system ? 'admin': 'app',
             message: '后端接口模块名: ',
         },
         // 前端资源访问路径
@@ -67,19 +67,19 @@ function handleConfig(option) {
         {
             type: 'input',
             name: 'publicPathDevelop',
-            default: '/admin',
+            default: option.system ? 'admin': 'app',
             message: 'public-path[develop]: ',
         },
         {
             type: 'input',
             name: 'publicPathTest',
-            default: '/admin',
+            default: option.system ? 'admin': 'app',
             message: 'public-path[test]: ',
         },
         {
             type: 'input',
             name: 'publicPathProduction',
-            default: '/admin',
+            default: option.system ? 'admin': 'app',
             message: 'public-path[production]: ',
         }
     ];
@@ -91,6 +91,7 @@ function handleConfig(option) {
             message: '登录方式: ',
         });
     }
+
     inquirer.prompt(configs).then(function (answers) {
         spinner.start(chalk.yellow.bold('正在项目配置...'));
         try {
